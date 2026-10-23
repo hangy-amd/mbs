@@ -1,0 +1,20 @@
+scale_shape = [M, scaleN(N // 32)]
+
+[(bs_offs_0(M // 32), bs_offs_1(32)), scaleN]
+[(bs_offs_0(M // 32), bs_offs_1(2), bs_offs_2(16)), scaleN]
+[(bs_offs_0(M // 32), bs_offs_1(2), bs_offs_2(16)), bs_offs_3(scaleN / 8), bs_offs_4(8)]
+[(bs_offs_0(M // 32), bs_offs_1(2), bs_offs_2(16)), 
+ (bs_offs_3(scaleN / 8), bs_offs_4(2), bs_offs_5(4))]
+
+[bs_offs_0(M // 32), bs_offs_3(scaleN / 8), bs_offs_5(4), 
+ bs_offs_2(16), bs_offs_4(2), bs_offs_1(2)]
+
+
+x_fp4_shape = [M, fp4N(N / 2)]
+
+BN = 16
+BK = 32
+K = 16
+[M1(M / BN), M2(BN), N1(fp4N / BK), N2(BK / K), N3(K)]
+
+[M1(M / BN), N1(fp4N / BK), N2(BK / K), M2(BN), N3(K)]
