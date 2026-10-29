@@ -39,13 +39,15 @@ HIP_COMMON_FLAGS := -O3 -std=c++20 -fPIC \
                     -D_GLIBCXX_USE_CXX11_ABI=$(TORCH_ABI) \
                     -Wno-unused-result
 
+.DEFAULT_GOAL := all
+.PHONY: all gemm asm clean
+
+############### build asm code ###############################
+
 $(BUILD_DIR)/asm/%.hsaco: $(ASM_DIR)/%.amdgcn | $(BUILD_DIR)/asm
 	$(LLVM_BIN)/clang -x assembler -target amdgcn-amd-amdhsa -mcpu=$(GPU_ARCH) -c $< -o $(@:.hsaco=.o)
 	$(LLVM_BIN)/ld.lld -shared $(@:.hsaco=.o) -o $@
 	rm -f $(@:.hsaco=.o)
-
-.DEFAULT_GOAL := all
-.PHONY: all gemm asm clean
 
 ############### build example module ###############################
 
